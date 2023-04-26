@@ -1,0 +1,83 @@
+/* fonts */
+export const FontFamily = {
+  robotoMedium: "Roboto_medium",
+  robotoBold: "Roboto_bold",
+  robotoRegular: "Roboto_regular",
+  workSansRegular: "Work Sans_regular",
+  pxRegular: "Montserrat_regular",
+  h5: "Montserrat_semibold",
+  montserratMedium: "Montserrat_medium",
+  montserratBoldItalic: "Montserrat_bold_italic",
+};
+/* font sizes */
+export const FontSize = {
+  pixells_size: 12,
+  size_lg: 18,
+  size_17xl: 36,
+  pxRegular_size: 14,
+  h5_size: 16,
+  size_xl: 20,
+  size_13xl: 32,
+};
+/* Colors */
+export const Color = {
+  systemBackgroundsSBLPrimary: "#fff",
+  orange: "#ff9134",
+  gray50: "#fafafa",
+  uIColorUiGray: "#808080",
+  gray_100: "#342b33",
+  gray_200: "#262626",
+  gray_300: "#222",
+  black: "#091f44",
+  gray_400: "rgba(255, 255, 255, 0.8)",
+  ghostwhite: "#f6f7fb",
+  darkslategray_100: "#46556b",
+  gray2: "#394d6d",
+  labelColorsLCLSecondary: "rgba(60, 60, 67, 0.6)",
+  aliceblue: "#f5faff",
+  midnightblue: "#070532",
+  labelColorsLCLPrimary: "#000",
+  userAccentColorUACLight: "#0a7aff",
+  gray3: "#6a788e",
+  chocolate: "rgba(239, 128, 47, 0.05)",
+  linen: "#fff0e8",
+  mistyrose: "rgba(255, 232, 232, 0.01)",
+  whitesmoke: "#f5f5f5",
+};
+/* Paddings */
+export const Padding = {
+  p_10xl: 29,
+  p_36xl: 55,
+  p_11xl: 30,
+  p_lg: 18,
+  p_xl: 20,
+  p_lgi: 19,
+  p_mid: 17,
+  p_41xl: 60,
+  p_mini: 15,
+  p_39xl: 58,
+  p_sm: 14,
+  p_3xs: 10,
+  p_base: 16,
+  p_5xs: 8,
+  p_7xs: 6,
+  p_2xs: 11,
+  p_9xs: 4,
+  p_xs: 12,
+  p_4xs: 9,
+  p_8xs: 5,
+  p_smi: 13,
+  p_10xs: 3,
+  p_11xs: 2,
+};
+/* border radiuses */
+export const Border = {
+  br_41xl: 60,
+  br_3xs: 10,
+  br_base: 16,
+  br_54xl: 73,
+  br_7xs: 6,
+  br_8xs: 5,
+  br_xs: 12,
+  br_81xl: 100,
+};

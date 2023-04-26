@@ -14,6 +14,7 @@ const SignUpBottomContainer = ({
   onLoginHerePress,
   onSigninHerePress,
   onSignup
+
 }) => {
   const navigation = useNavigation();
 

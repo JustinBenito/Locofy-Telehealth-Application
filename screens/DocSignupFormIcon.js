@@ -14,6 +14,7 @@ import { FontSize, FontFamily, Color, Border, Padding } from "../GlobalStyles";
 
 const DocSignupFormIcon = () => {
   const navigation = useNavigation();
+  
 
   return (
     <ImageBackground

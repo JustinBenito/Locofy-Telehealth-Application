@@ -13,9 +13,22 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import FrameComponent from "../components/FrameComponent";
 import { Color, FontFamily, Padding, Border, FontSize } from "../GlobalStyles";
+import {signOut} from 'firebase/auth'
+import {auth} from '../firebase'
 
 const DocHome = () => {
   const navigation = useNavigation();
+
+  const signOutof = () => {
+    signOut(auth).then(() => {
+      console.log("Sign out!")
+      navigation.navigate("SignUp")
+    }).catch((error) => {
+    console.log(error);
+    });
+    
+      }
+  
 
   return (
     <ScrollView
@@ -174,7 +187,7 @@ const DocHome = () => {
             source={require("../assets/vector16.png")}
           />
         </Pressable>
-        <Pressable style={[styles.checkbox3, styles.checkboxShadowBox]}>
+        <Pressable style={[styles.checkbox3, styles.checkboxShadowBox]} onPress={signOutof}>
           <View style={styles.iconParent}>
             <View style={styles.icon4}>
               <Image
@@ -185,7 +198,7 @@ const DocHome = () => {
             </View>
             <Text style={[styles.title4, styles.title4Typo]}>Log out</Text>
           </View>
-          <Pressable style={styles.fluentedit20Regular}>
+          <Pressable style={styles.fluentedit20Regular} >
             <Image
               style={styles.vectorLayout}
               resizeMode="cover"
@@ -389,7 +402,7 @@ const styles = StyleSheet.create({
   },
   reshedule: {
     color: Color.systemBackgroundsSBLPrimary,
-    lineHeight: 18,
+    lineHeight: 38,
     fontFamily: FontFamily.pxRegular,
     fontSize: FontSize.h5_size,
     justifyContent: "center",

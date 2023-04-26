@@ -4,9 +4,29 @@ import { useNavigation } from "@react-navigation/native";
 import SignUpCard from "../components/SignUpCard";
 import SignUpBottomContainer from "../components/SignUpBottomContainer";
 import { Border, Color, Padding } from "../GlobalStyles";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../firebase";
 
 const DocSignUpIcon = () => {
   const navigation = useNavigation();
+  const [email, setEmail] = React.useState('');
+  const [password, setPassword] = React.useState('');
+  const onHandleSignin = () => {
+    if(email!=='' && password!==''){
+createUserWithEmailAndPassword(auth, email, password)
+    .then(() => {
+  console.log('Signin done');
+  navigation.navigate("DocSignupForm");
+    })
+    .catch((error) => {
+  const errorCode = error.code;
+  const errorMessage = error.message;
+  // ..
+    });
+
+    }
+  }
+
 
   return (
     <ImageBackground
@@ -15,11 +35,12 @@ const DocSignUpIcon = () => {
       source={require("../assets/login.png")}
     >
       <View style={styles.login}>
-        <SignUpCard />
+        <SignUpCard email={email} password={password} setEmail={setEmail} setPassword={setPassword} />
         <SignUpBottomContainer
           areYouADoctor="Are you a Patient"
           onLoginHerePress={() => navigation.navigate("DocLogin")}
           onSigninHerePress={() => navigation.navigate("Login")}
+          onSignup = {()=> onHandleSignin()}
         />
       </View>
     </ImageBackground>

@@ -12,7 +12,7 @@ const SignUpIcon = () => {
   const navigation = useNavigation();
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
-  onHandleSignin = () => {
+  const onHandleSignin1 = () => {
     if(email!=='' && password!==''){
 createUserWithEmailAndPassword(auth, email, password)
     .then(() => {
@@ -40,7 +40,7 @@ createUserWithEmailAndPassword(auth, email, password)
           areYouADoctor="Are you a Doctor"
           onLoginHerePress={() => navigation.navigate("Login")}
           onSigninHerePress={() => navigation.navigate("DocLogin")}
-          onSignup = {()=> onHandleSignin()}
+          onSignup = {()=> onHandleSignin1()}
         />
       </View>
     </ImageBackground>

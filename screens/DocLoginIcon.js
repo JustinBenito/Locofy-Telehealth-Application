@@ -14,7 +14,18 @@ import { Padding, Color, Border, FontFamily, FontSize } from "../GlobalStyles";
 
 const DocLoginIcon = () => {
   const navigation = useNavigation();
+  const [email, setEmail] = React.useState('');
+  const [password, setPassword] = React.useState('');
 
+  const onHandleLogin = () => {
+    if(email!=='' && password!==''){
+       signInWithEmailAndPassword(auth, email, password)
+       .then(()=>{
+        navigation.navigate("DocHome")
+       })
+    }
+  }
+ 
   return (
     <ImageBackground
       style={styles.docLoginIcon}
@@ -37,6 +48,8 @@ const DocLoginIcon = () => {
                   placeholder="Email Address"
                   keyboardType="default"
                   placeholderTextColor="#a4a4a4"
+                  onChangeText={e=>setEmail(e)}
+                  value={email}
                 />
               </View>
             </View>
@@ -54,6 +67,8 @@ const DocLoginIcon = () => {
                     keyboardType="default"
                     secureTextEntry
                     placeholderTextColor="#a4a4a4"
+                    onChangeText={e=>setPassword(e)}
+                    value={password}
                   />
                 </View>
               </View>

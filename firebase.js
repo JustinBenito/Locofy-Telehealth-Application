@@ -8,12 +8,12 @@ import 'firebase/firestore'
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyAhaxRoE_68XQMfuV4t_GqjNcJmX1eDB68",
-  authDomain: "locofy-telehealth-app.firebaseapp.com",
-  projectId: "locofy-telehealth-app",
-  storageBucket: "locofy-telehealth-app.appspot.com",
-  messagingSenderId: "819221090122",
-  appId: "1:819221090122:web:e280ed162ec96a21c57bb3"
+  apiKey: "YOURAPIKEY",
+  authDomain: "YOURAPIKEY",
+  projectId: "YOURAPIKEY",
+  storageBucket: "YOURAPIKEY",
+  messagingSenderId: "YOURAPIKEY",
+  appId: "YOURAPIKEY"
 };
 
 initializeApp(firebaseConfig);

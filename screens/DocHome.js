@@ -26,8 +26,7 @@ const DocHome = () => {
     }).catch((error) => {
     console.log(error);
     });
-    
-      }
+}
   
 
   return (

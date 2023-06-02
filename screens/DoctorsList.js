@@ -11,15 +11,164 @@ import {
   TextInput,
   ImageBackground,
 } from "react-native";
+import {addDoc, collection, getDocs, query, where} from 'firebase/firestore';
+import {auth, db} from '../firebase'
 import { useNavigation } from "@react-navigation/native";
 import { Color, Padding, FontFamily, Border, FontSize } from "../GlobalStyles";
+import { FlatList } from "react-native-gesture-handler";
 
 const DoctorsList = () => {
   const navigation = useNavigation();
+  const [search, setSearch]=React.useState('');
+  const [appointments, setAppointments]=React.useState('');
+
+
+  React.useEffect(()=>{
+
+      const q = query(collection(db, 'appointments'), where('Specialty', "==", search));
+
+      async function updateAppointments(){
+        try{
+          let t=[];
+          const querySnapshot = await getDocs(q);
+          querySnapshot.forEach((doc)=>{
+            t.push(doc.data())
+            return doc;
+          });
+          setAppointments(t);
+        }
+        catch(e){
+          console.log('try catching the error :)', e);
+        }
+      }
+      updateAppointments()
+  }, [search])
+
+  async function bookAppointmentFunction(docEmail, time){
+    const docRef=collection(db, 'app-done');
+    await addDoc(
+      docRef, {
+        docemail: docEmail,
+        time: time,
+        useremail: auth.currentUser.email,
+      }
+    )
+  }
+
+  const Render = ({item}) => {
+
+    var docname= item.doc.split('@');
+    docname=docname[0];
+    var spec=item.Speciality;
+    var rat=item.Rating;
+    var date = item.time.toDate().toLocaleDateString();
+    var time=item.time.toDate().toLocaleTimeString();
+
+    return <View style={[styles.appointmentWrapper, styles.wrapperFlexBox]}>
+    <View style={[styles.appointment, styles.appointmentSpaceBlock]}>
+      <TouchableOpacity
+        style={styles.frameParent}
+        activeOpacity={0.2}
+        onPress={() => navigation.navigate("DoctorsProfile")}
+      >
+        <View>
+          <View>
+            <Text
+              style={[styles.title1, styles.titleClr]}
+            >Dr. {docname}</Text>
+            <Text style={[styles.title2, styles.titleLayout]}>
+              {spec}
+            </Text>
+          </View>
+          <View style={styles.fluentstar20FilledParent}>
+            <Pressable style={styles.fluentstar20Filled}>
+              <Image
+                style={styles.vectorIcon}
+                resizeMode="cover"
+                source={require("../assets/vector12.png")}
+              />
+            </Pressable>
+            <View style={styles.ratingParent}>
+              <Text style={[styles.rating, styles.titleLayout]}>
+                Rating
+              </Text>
+              <Text style={[styles.title3, styles.titleLayout]}>
+                {rat} out of 5
+              </Text>
+            </View>
+          </View>
+        </View>
+        <ImageBackground
+          style={styles.icon1}
+          resizeMode="cover"
+          source={require("../assets/icon6.png")}
+        />
+      </TouchableOpacity>
+      <Pressable
+        style={[styles.frameContainer, styles.frameContainerSpaceBlock]}
+      >
+        <View style={styles.vectorParent}>
+          <Image
+            style={styles.vectorIcon1}
+            resizeMode="cover"
+            source={require("../assets/vector14.png")}
+          />
+          <Text style={[styles.mondayDec23, styles.titleLayout]}>
+            {date}
+          </Text>
+        </View>
+        <View style={styles.vectorParent}>
+          <Image
+            style={styles.vectorIcon1}
+            resizeMode="cover"
+            source={require("../assets/vector15.png")}
+          />
+          <Text style={[styles.mondayDec23, styles.titleLayout]}>
+            {time}
+          </Text>
+        </View>
+      </Pressable>
+      <Pressable
+        style={[styles.frameContainer, styles.frameContainerSpaceBlock]}
+      >
+        <View style={styles.vectorParent}>
+          <Image
+            style={styles.vectorIcon1}
+            resizeMode="cover"
+            source={require("../assets/vector14.png")}
+          />
+          <Text style={[styles.mondayDec23, styles.titleLayout]}>
+            Wednesday, April 11
+          </Text>
+        </View>
+        <View style={styles.vectorParent}>
+          <Image
+            style={styles.vectorIcon1}
+            resizeMode="cover"
+            source={require("../assets/vector15.png")}
+          />
+          <Text style={[styles.mondayDec23, styles.titleLayout]}>
+            02:00-04:00
+          </Text>
+        </View>
+      </Pressable>
+      <TouchableOpacity
+        style={[
+          styles.bookDoctorWrapper,
+          styles.frameContainerSpaceBlock,
+        ]}
+        activeOpacity={0.2}
+        onPress={() => bookAppointmentFunction(item.doc, item.time)}
+      >
+        <Text style={styles.bookDoctor}>Book Doctor</Text>
+      </TouchableOpacity>
+    </View>
+  </View>
+  }
 
   return (
     <SafeAreaView style={[styles.doctorsList, styles.bottomTabsBg]}>
-      <ScrollView
+      <ScrollView nestedScrollEnabled={true}
         style={styles.frame}
         contentContainerStyle={styles.frameScrollViewContent}
       >
@@ -62,6 +211,8 @@ const DoctorsList = () => {
             placeholder="Search your Symptoms"
             keyboardType="default"
             placeholderTextColor="#ffa925"
+            onChangeText={setSearch}
+            value={search}
           />
         </ImageBackground>
         <View style={styles.titleSpaceBlock}>
@@ -78,8 +229,8 @@ const DoctorsList = () => {
             <Text style={styles.basedOnRating}>based on rating</Text>
           </View>
         </View>
-        <View style={[styles.appointments, styles.titleSpaceBlock]}>
-          <View style={[styles.appointmentWrapper, styles.wrapperFlexBox]}>
+        
+          {/* <View style={[styles.appointmentWrapper, styles.wrapperFlexBox]}>
             <View style={[styles.appointment, styles.appointmentSpaceBlock]}>
               <TouchableOpacity
                 style={styles.frameParent}
@@ -178,8 +329,8 @@ const DoctorsList = () => {
                 <Text style={styles.bookDoctor}>Book Doctor</Text>
               </TouchableOpacity>
             </View>
-          </View>
-          <SafeAreaView
+          </View> */}
+          {/* <SafeAreaView
             style={[styles.appointmentContainer, styles.wrapperFlexBox]}
           >
             <View style={[styles.appointment1, styles.appointmentSpaceBlock]}>
@@ -280,8 +431,14 @@ const DoctorsList = () => {
                 <Text style={styles.bookDoctor}>Book Doctor</Text>
               </TouchableOpacity>
             </View>
-          </SafeAreaView>
-        </View>
+          </SafeAreaView> */}
+          <FlatList nestedScrollEnabled={true} contentContainerStyle={[styles.appointments, styles.titleSpaceBlock]}
+          data={appointments}
+          renderItem={({item})=> <Render key={item.id} item={item} />}
+          keyExtractor={item=>item.id}
+          
+          />
+
       </ScrollView>
     </SafeAreaView>
   );

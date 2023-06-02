@@ -14,9 +14,99 @@ import { useNavigation } from "@react-navigation/native";
 import FrameComponent from "../components/FrameComponent";
 import Articles from "../components/Articles";
 import { Color, Padding, FontFamily, FontSize, Border } from "../GlobalStyles";
+import {addDoc, collection, getDocs, query, where} from 'firebase/firestore';
+import {auth, db} from '../firebase'
+import { FlatList } from "react-native-gesture-handler";
 
 const PatientHome = () => {
   const navigation = useNavigation();
+  const [appointments, setAppointments]=React.useState([])
+  let useremail=auth.currentUser.email;
+
+
+  React.useEffect(()=>{
+
+    const q = query(collection(db, 'app-done'), where('useremail', "==", useremail));
+
+    async function updateAppointments(){
+      try{
+        let t=[];
+        const querySnapshot = await getDocs(q);
+        querySnapshot.forEach((doc)=>{
+          t.push(doc.data())
+          return doc;
+        });
+        setAppointments(t);
+      }
+      catch(e){
+        console.log('try catching the error :)', e);
+      }
+    }
+    updateAppointments()
+}, [useremail])
+
+const Render = ({item})=>{
+  var docname=item.docemail.split("@");
+  docname=docname[0];
+  var date = item.time.toDate().toLocaleDateString();
+  var time=item.time.toDate().toLocaleTimeString();
+  return <>
+  <View style={styles.upcomingAppointmentsWrapper}>
+          </View>
+          <View style={[styles.appointment, styles.bottomTabsFlexBox]}>
+            <View style={[styles.frameGroup, styles.headerFlexBox]}>
+              <View>
+                <View>
+                  <Text style={[styles.title, styles.titleTypo]}>
+                    Dr. {docname}
+                  </Text>
+                </View>
+                <View style={styles.fluentstar20FilledParent}>
+                  <Image
+                    style={[styles.fluentstar20FilledIcon, styles.iconLayout]}
+                    resizeMode="cover"
+                    source={require("../assets/fluentstar20filled.png")}
+                  />
+                  <View style={styles.ratingParent}>
+                    <Text style={[styles.rating, styles.title1Typo]}>
+                      Rating
+                    </Text>
+                    <Text style={[styles.title2, styles.titleLayout]}>
+                      4.78 out of 5
+                    </Text>
+                  </View>
+                </View>
+              </View>
+              <ImageBackground
+                style={styles.icon1}
+                resizeMode="cover"
+                source={require("../assets/icon6.png")}
+              />
+            </View>
+            <FrameComponent
+              mondayApril09="Monday, Dec 23"
+              vector={require("../assets/vector15.png")}
+              prop="12:00-13:00"
+              propMarginTop={16}
+            />
+            <View style={styles.frameView}>
+              <Pressable
+                style={[styles.resheduleWrapper, styles.wrapperFlexBox]}
+              >
+                <Text style={[styles.reshedule, styles.title1Typo]}>
+                  Reshedule
+                </Text>
+              </Pressable>
+              <Pressable style={[styles.cancelWrapper, styles.wrapperFlexBox]}>
+                <Text style={[styles.cancel, styles.title1Typo]}>Cancel</Text>
+              </Pressable>
+            </View>
+          </View>
+          </>
+}
+
+
+
 
   return (
     <SafeAreaView style={[styles.patientHome, styles.headerBg]}>
@@ -105,65 +195,16 @@ const PatientHome = () => {
             </View>
           </View>
         </View>
-        <View style={styles.frameParent}>
-          <View style={styles.upcomingAppointmentsWrapper}>
-            <Text style={[styles.yourSymptoms, styles.healthTips1Typo]}>
+        <Text style={[styles.yourSymptoms, styles.healthTips1Typo]}>
               Upcoming Appointments
             </Text>
-          </View>
-          <View style={[styles.appointment, styles.bottomTabsFlexBox]}>
-            <View style={[styles.frameGroup, styles.headerFlexBox]}>
-              <View>
-                <View>
-                  <Text style={[styles.title, styles.titleTypo]}>
-                    Dr. Charollette Baker
-                  </Text>
-                  <Text style={[styles.title1, styles.title1Typo]}>
-                    Pediatrician
-                  </Text>
-                </View>
-                <View style={styles.fluentstar20FilledParent}>
-                  <Image
-                    style={[styles.fluentstar20FilledIcon, styles.iconLayout]}
-                    resizeMode="cover"
-                    source={require("../assets/fluentstar20filled.png")}
-                  />
-                  <View style={styles.ratingParent}>
-                    <Text style={[styles.rating, styles.title1Typo]}>
-                      Rating
-                    </Text>
-                    <Text style={[styles.title2, styles.titleLayout]}>
-                      4.78 out of 5
-                    </Text>
-                  </View>
-                </View>
-              </View>
-              <ImageBackground
-                style={styles.icon1}
-                resizeMode="cover"
-                source={require("../assets/icon6.png")}
-              />
-            </View>
-            <FrameComponent
-              mondayApril09="Monday, Dec 23"
-              vector={require("../assets/vector15.png")}
-              prop="12:00-13:00"
-              propMarginTop={16}
-            />
-            <View style={styles.frameView}>
-              <Pressable
-                style={[styles.resheduleWrapper, styles.wrapperFlexBox]}
-              >
-                <Text style={[styles.reshedule, styles.title1Typo]}>
-                  Reshedule
-                </Text>
-              </Pressable>
-              <Pressable style={[styles.cancelWrapper, styles.wrapperFlexBox]}>
-                <Text style={[styles.cancel, styles.title1Typo]}>Cancel</Text>
-              </Pressable>
-            </View>
-          </View>
-        </View>
+        <FlatList nestedScrollEnabled={true} contentContainerStyle={[styles.frameParent]}
+          data={appointments}
+          renderItem={({item})=> <Render key={item.id} item={item} />}
+          keyExtractor={item=>item.id}
+          />
+
+
         <View style={[styles.contentInner, styles.contentInnerSpaceBlock]}>
           <View style={styles.healthTipsParent}>
             <View style={styles.symptomContainer}>

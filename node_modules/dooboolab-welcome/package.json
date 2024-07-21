@@ -1,0 +1,23 @@
+{
+  "name": "dooboolab-welcome",
+  "version": "1.3.2",
+  "description": "dooboolab welcome console message.",
+  "main": "index.js",
+  "scripts": {
+    "postinstall": "node bin/hello.js",
+    "lint": "eslint -c .eslintrc.js bin"
+  },
+  "bin": {
+    "dooboolab-welcome": "./bin/hello.js"
+  },
+  "keywords": [
+    "dooboolab"
+  ],
+  "author": "support@dooboolab.com",
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "^7.31.0",
+    "prettier": "^2.3.2",
+    "@dooboo/eslint-config": "^0.8.2"
+  }
+}

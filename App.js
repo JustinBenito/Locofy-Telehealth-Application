@@ -1,5 +1,6 @@
 const Stack = createNativeStackNavigator();
 import * as React from "react";
+import {  StyleSheet } from 'react-native';
 import { NavigationContainer } from "@react-navigation/native";
 import { useFonts } from "expo-font";
 import SignUpIcon from "./screens/SignUpIcon";
@@ -31,6 +32,8 @@ import {
 } from "react-native";
 
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import DetailScreen from "./screens/DetailScreen";
+import HomeScreen from "./screens/PatientHome";
 
 const Tab = createBottomTabNavigator();
 function BottomTabsRoot({ navigation }) {
@@ -88,7 +91,7 @@ function BottomTabsRoot({ navigation }) {
     >
       <Tab.Screen
         name="PatientHome"
-        component={PatientHome}
+        component={HomeScreen}
         options={{ headerShown: false }}
       />
       <Tab.Screen
@@ -127,7 +130,7 @@ const App = () => {
       <NavigationContainer>
         {hideSplashScreen ? (
           <Stack.Navigator
-            initialRouteName="SignUp"
+            initialRouteName="HomeScreen"
             screenOptions={{ headerShown: false }}
           >
             <Stack.Screen name="BottomTabsRoot" component={BottomTabsRoot} />
@@ -176,10 +179,48 @@ const App = () => {
               component={DocSignUpIcon}
               options={{ headerShown: false }}
             />
+             <Stack.Screen name="HomeScreen" component={HomeScreen} />
+            <Stack.Screen
+              name="Details"
+              component={DetailScreen}
+              options={({ navigation }) => ({
+                headerShown: true,
+                headerLeft: () => (
+                  <TouchableOpacity onPress={() => navigation.goBack()}>
+                    <Text style={styles.backButton}>Back</Text>
+                  </TouchableOpacity>
+                ),
+                headerTitle: '',
+                headerStyle: { backgroundColor: 'white' },
+                headerTintColor: 'orange',
+              })}
+            />
           </Stack.Navigator>
         ) : null}
       </NavigationContainer>
     </>
   );
 };
+
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'white',
+  },
+  text: {
+    fontSize: 24,
+    color: 'orange',
+  },
+  backButton: {
+    marginLeft: 15,
+    color: 'orange',
+    fontSize: 18,
+  },
+});
+
+
 export default App;
+

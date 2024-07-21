@@ -38,7 +38,7 @@ createUserWithEmailAndPassword(auth, email, password)
         <SignUpCard email={email} password={password} setEmail={setEmail} setPassword={setPassword}/>
         <SignUpBottomContainer
           areYouADoctor="Are you a Doctor"
-          onLoginHerePress={() => navigation.navigate("Login")}
+          onLoginHerePress={() => navigation.navigate("HomeScreen")}
           onSigninHerePress={() => navigation.navigate("DocLogin")}
           onSignup = {()=> onHandleSignin1()}
         />
